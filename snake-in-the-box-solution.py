@@ -1,6 +1,10 @@
 import numpy as np
 import pprint
 import time
+import sys, getopt
+
+
+MAX_SNAKE_LENGTH = [1, 2, 4, 7, 13, 26, 50, 98]
 
 def get_hamming_distance(first_string, second_string):
     distance = 0
@@ -47,9 +51,10 @@ def mark_neighbours_as_unvisitable(matrix, row, size):
             matrix[j, :] = False
     return matrix
 
+#TODO: Dodac iteracje dla kazdego patha
 
-def create_snake(adjacency_matrix, possible_move_matrix, size):
-    current_snake = [0]
+def create_snake(adjacency_matrix, possible_move_matrix, size,n, start_idx):
+    current_snake = [start_idx]
     print('initial_setup = \n {0}'.format(possible_move_matrix))
     print('*****************************************')
     snake_finished = False
@@ -76,16 +81,41 @@ def create_snake(adjacency_matrix, possible_move_matrix, size):
     return current_snake
 
 
-n = 2
+def rearrange_matrices(adj_matrix, poss_matrix):
+    return None
 
-cube_nodes = generate_gray_code(n)
 
-adjacency_matrix = create_adjacency_matrix(nodes = cube_nodes)
-move_matrix = create_possible_move_matrix(nodes = cube_nodes)
-start = time.clock()
-end = time.clock()
-snake = create_snake(adjacency_matrix,move_matrix,len(cube_nodes))
-snake_string = [cube_nodes[element] for element in snake]
-print(snake_string)
-print(len(snake_string) - 1)
-print('Time passed {0}s'.format(end-start))
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv,"n:",["length-of-word="])
+    except getopt.GetoptError:
+        print ('snake-in-the-box.py -n <length-of-the-word>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt in ("-n","--length-of-word"):
+            n = int(arg)
+            longest_snake_found = False
+            nodes = generate_gray_code(n)
+            adjacency_matrix = create_adjacency_matrix(nodes = nodes)
+            move_matrix = create_possible_move_matrix(nodes = nodes)
+            start = time.clock()
+            end = time.clock()
+            while not longest_snake_found:
+                starting_idx = 0
+                snake = create_snake(adjacency_matrix,move_matrix,len(nodes),n,starting_idx)
+                print(snake)
+                print(len(snake) == MAX_SNAKE_LENGTH[n-1])
+                if len(snake) == MAX_SNAKE_LENGTH[n-1]:
+                    print("LONGEST SNAKE FOUND")
+                    longest_snake_found = True
+                    break
+                starting_idx = starting_idx + 1
+             
+            snake_string = [nodes[element] for element in snake]
+            print(snake)
+            print(snake_string)
+            print(len(snake_string) - 1)
+            print('Time passed {0}s'.format(end-start))
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
