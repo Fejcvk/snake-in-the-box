@@ -1,3 +1,5 @@
 /venv
-/.idea
+.idea
 .idea/*
+.vscode/*
+/snake
