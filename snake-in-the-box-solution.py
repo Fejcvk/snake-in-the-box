@@ -44,16 +44,15 @@ def create_possible_move_matrix(nodes):
     return possible_move_matirx
 
 
-def mark_neighbours_as_unvisitable(matrix, row, size):
+def mark_neighbours_as_unvisitable(matrix, row, size, value=False):
     for j in range(0,size):
         if matrix[row, j]:
-            matrix[:, j] = False
-            matrix[j, :] = False
+            matrix[:, j] = value
+            matrix[j, :] = value
     return matrix
 
-#TODO: Dodac iteracje dla kazdego patha
 
-def create_snake(adjacency_matrix, possible_move_matrix, size,n, start_idx):
+def create_snake2(adjacency_matrix, possible_move_matrix, size,n, start_idx):
     current_snake = [start_idx]
     print('initial_setup = \n {0}'.format(possible_move_matrix))
     print('*****************************************')
@@ -81,7 +80,33 @@ def create_snake(adjacency_matrix, possible_move_matrix, size,n, start_idx):
     return current_snake
 
 
-def rearrange_matrices(adj_matrix, poss_matrix):
+def dfs(source, destination, path, visited_array, number_of_nodes, adjacency_matrix):
+    path.append(source)
+    visited_array[source] = True
+    if source == destination:
+        #print(path)
+        yield path.copy()
+    else:
+        for node in range(0, number_of_nodes):
+            if adjacency_matrix[source, node] == 1:
+                if not visited_array[node]:
+                    yield from dfs(node,destination,path,visited_array,number_of_nodes,adjacency_matrix)
+    path.pop()
+    visited_array[source] = False
+
+
+def create_snake(adj_matrix, nodes, number_of_nodes,n):
+    is_visited = np.zeros(number_of_nodes, dtype=np.bool)
+    for source in range(0,number_of_nodes):
+        for destination in range(0,number_of_nodes):
+            current_path = []
+            current_paths = list(dfs(source= source, destination = destination, path= current_path, visited_array=is_visited, number_of_nodes= number_of_nodes, adjacency_matrix=adj_matrix))
+            for path in current_paths:
+                if len(path) - 1 > MAX_SNAKE_LENGTH[n - 1]:
+                    print('DUPA')
+                if len(path) - 1 == MAX_SNAKE_LENGTH[n - 1]:
+                    return path
+            # print(path)
     return None
 
 
@@ -94,23 +119,12 @@ def main(argv):
     for opt,arg in opts:
         if opt in ("-n","--length-of-word"):
             n = int(arg)
-            longest_snake_found = False
             nodes = generate_gray_code(n)
             adjacency_matrix = create_adjacency_matrix(nodes = nodes)
-            move_matrix = create_possible_move_matrix(nodes = nodes)
             start = time.clock()
+            print(adjacency_matrix)
+            snake = create_snake(adjacency_matrix,nodes, len(nodes),n)
             end = time.clock()
-            while not longest_snake_found:
-                starting_idx = 0
-                snake = create_snake(adjacency_matrix,move_matrix,len(nodes),n,starting_idx)
-                print(snake)
-                print(len(snake) == MAX_SNAKE_LENGTH[n-1])
-                if len(snake) == MAX_SNAKE_LENGTH[n-1]:
-                    print("LONGEST SNAKE FOUND")
-                    longest_snake_found = True
-                    break
-                starting_idx = starting_idx + 1
-             
             snake_string = [nodes[element] for element in snake]
             print(snake)
             print(snake_string)
@@ -119,3 +133,5 @@ def main(argv):
 
 if __name__ == "__main__":
    main(sys.argv[1:])
+
+#FIXME:
