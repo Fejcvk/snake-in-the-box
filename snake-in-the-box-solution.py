@@ -44,13 +44,13 @@ def create_possible_move_matrix(nodes):
     return possible_move_matirx
 
 
-def mark_neighbours_as_unvisitable(matrix, row, dest, size, value=False):
+def mark_neighbours_as_unvisitable(matrix, row, dest):
     matrix[row,dest] = False
     matrix[dest,row] = False
-    for j in range(0,size):
-        if matrix[row, j]:
-            matrix[:, j] = value
-            matrix[j, :] = value
+    true_idxs = matrix[row].nonzero()[0]
+    for idx in true_idxs:
+        matrix[:,idx] = False
+        matrix[idx, :] = False
     return matrix
 
 
@@ -87,35 +87,40 @@ def adapt_matrix_from_path(path,adjacency_matrix,size):
     if len(path) < 2:
         return blank_matrix
     for element_idx in range(1,len(path)):
-        mark_neighbours_as_unvisitable(blank_matrix,path[element_idx - 1],path[element_idx],size)
+        mark_neighbours_as_unvisitable(blank_matrix,path[element_idx - 1],path[element_idx])
     return blank_matrix
 
 
-def dfs(source, destination, path, visited_array, number_of_nodes, adjacency_matrix):
-    
+def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix, possible_move_matrix = None):
     path.append(source)
     move_matrix = adapt_matrix_from_path(path,adjacency_matrix,number_of_nodes)
     visited_array[source] = True
-    if move_matrix.max() == False:
-        print(path)
+    if not move_matrix.max():
+        # print(path)
         yield path.copy()
     else:
-        for node in range(0, number_of_nodes):
+        for node in range(3, number_of_nodes):
             if adjacency_matrix[source, node] == 1:
                 if not visited_array[node]:
                     if move_matrix[source,node]:
-                        yield from dfs(node,destination,path,visited_array,number_of_nodes,adjacency_matrix)
+                        yield from dfs(node,path,visited_array,
+                                       number_of_nodes,adjacency_matrix, possible_move_matrix=move_matrix.copy())
     path.pop()
     visited_array[source] = False
 
 
-def create_snake(adj_matrix, nodes, number_of_nodes,n):
+def create_snake(adj_matrix, number_of_nodes,n):
+    max_len = 0
+    max_path = []
     is_visited = np.zeros(number_of_nodes, dtype=np.bool)
-    for destination in range(0,number_of_nodes):
-        current_paths = list(dfs(source= 2, destination = destination, path= [0,1], visited_array=is_visited, number_of_nodes= number_of_nodes, adjacency_matrix=adj_matrix))
-        for path in current_paths:
-            if len(path) - 1 == MAX_SNAKE_LENGTH[n - 1]:
-                return path
+    for path in dfs(source= 2, path= [0,1], visited_array=is_visited, number_of_nodes= number_of_nodes, adjacency_matrix=adj_matrix):
+        if len(path) > max_len:
+            max_len = len(path)
+            max_path = path
+            print(max_len)
+    # return max_path
+        if len(path) - 1 == MAX_SNAKE_LENGTH[n-1]:
+            return path
     return None
 
 
@@ -131,7 +136,7 @@ def main(argv):
             nodes = generate_gray_code(n)
             adjacency_matrix = create_adjacency_matrix(nodes = nodes)
             start = time.clock()
-            snake = create_snake(adjacency_matrix,nodes, len(nodes),n)
+            snake = create_snake(adjacency_matrix, len(nodes),n)
             end = time.clock()
             snake_string = [nodes[element] for element in snake]
             print('*****************************')
