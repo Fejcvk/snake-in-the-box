@@ -51,8 +51,8 @@ def adapt_matrix_from_path(path, adjacency_matrix):
     blank_matrix = adjacency_matrix.astype(bool)
     if len(path) < 2:
         return blank_matrix
-    else:
-        blank_matrix = mark_neighbours_as_unvisitable(blank_matrix, path=path)
+
+    blank_matrix = mark_neighbours_as_unvisitable(blank_matrix, path=path)
     return blank_matrix
 
 
