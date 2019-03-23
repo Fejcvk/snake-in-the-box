@@ -56,14 +56,12 @@ def adapt_matrix_from_path(path, adjacency_matrix):
     return blank_matrix
 
 
-def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, possible_move_matrix=None,
-        old_move_matrix=None):
+def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, possible_move_matrix=None):
     path.append(source)
     
     if possible_move_matrix is None and adjacency_matrix is not None:
         possible_move_matrix = adapt_matrix_from_path(path, adjacency_matrix)
-        old_move_matrix = possible_move_matrix.copy()
-    
+
     visited_array[source] = True
     if not possible_move_matrix.max():
         # print(path)
@@ -78,10 +76,8 @@ def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, pos
                                     visited_array, 
                                     number_of_nodes,
                                     possible_move_matrix=mark_neighbours_as_unvisitable(possible_move_matrix, row=source, dest=node),
-                                    old_move_matrix=possible_move_matrix
-                                    )
+                    )
     path.pop()
-    possible_move_matrix = old_move_matrix
     visited_array[source] = False
 
 
