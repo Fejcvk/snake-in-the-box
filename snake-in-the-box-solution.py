@@ -33,12 +33,13 @@ def mark_neighbours_as_unvisitable(_matrix, row=None, dest=None,path=None):
     matrix = _matrix.copy()
     if path is not None:
         for idx in range(1,len(path)):
-            newmethod659(matrix,path[idx-1],path[idx])
+            martk_vertices_as_unvisitable(matrix, path[idx - 1], path[idx])
     else:
-        newmethod659(matrix, row, dest)
+        martk_vertices_as_unvisitable(matrix, row, dest)
     return matrix
 
-def newmethod659(matrix, row, dest):
+
+def martk_vertices_as_unvisitable(matrix, row, dest):
     matrix[row, dest] = False
     matrix[dest, row] = False
     true_idxs = matrix[row].nonzero()[0]
@@ -46,6 +47,7 @@ def newmethod659(matrix, row, dest):
         matrix[:, idx] = False
         matrix[idx, :] = False
     return matrix
+
 
 def adapt_matrix_from_path(path, adjacency_matrix):
     blank_matrix = adjacency_matrix.astype(bool)
