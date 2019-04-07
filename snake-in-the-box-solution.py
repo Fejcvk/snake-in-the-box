@@ -9,6 +9,7 @@ def get_hamming_distance(first_string, second_string):
     assert len(first_string) == len(second_string)
     return sum(c1 != c2 for c1, c2 in zip(first_string, second_string))
 
+
 def generate_gray_code(len):
     codes = []
     for i in range(0, 1 << len):
@@ -22,9 +23,8 @@ def create_adjacency_matrix(nodes):
     adjacency_matrix = np.zeros(shape=(nodes_count, nodes_count), dtype=np.int)
 
     for i in range(0, nodes_count):
-        curr_node = nodes[i]
         for j in range(0, nodes_count):
-            if get_hamming_distance(first_string=curr_node, second_string=nodes[j]) == 1:
+            if get_hamming_distance(first_string=nodes[i], second_string=nodes[j]) == 1:
                 adjacency_matrix[i, j] = 1
     return adjacency_matrix
 
@@ -60,7 +60,7 @@ def adapt_matrix_from_path(path, adjacency_matrix):
 
 def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, possible_move_matrix=None):
     path.append(source)
-    
+
     if possible_move_matrix is None and adjacency_matrix is not None:
         possible_move_matrix = adapt_matrix_from_path(path, adjacency_matrix)
 
@@ -73,9 +73,9 @@ def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, pos
             if possible_move_matrix[source, node]:
                 if not visited_array[node]:
                     yield from dfs(
-                                    node, 
-                                    path, 
-                                    visited_array, 
+                                    node,
+                                    path,
+                                    visited_array,
                                     number_of_nodes,
                                     possible_move_matrix=mark_neighbours_as_unvisitable(possible_move_matrix, row=source, dest=node),
                     )
