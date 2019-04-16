@@ -3,3 +3,4 @@
 .idea/*
 .vscode/*
 /snake
+/__pycache__

@@ -85,13 +85,12 @@ def dfs(source, path, visited_array, number_of_nodes, adjacency_matrix=None, pos
 
 def create_snake(adj_matrix, number_of_nodes, n):
     max_len = 0
-    max_path = []
     is_visited = np.zeros(number_of_nodes, dtype=np.bool)
     for path in dfs(source=2, path=[0, 1], visited_array=is_visited, number_of_nodes=number_of_nodes,
                     adjacency_matrix=adj_matrix):
         if len(path) > max_len:
             max_len = len(path)
-            print('New max len = {0}'.format(max_len - 1))
+            #print('New max len = {0}'.format(max_len - 1))
         if len(path) - 1 == MAX_SNAKE_LENGTH[n - 1]:
             return path
     return []
@@ -101,7 +100,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "n:", ["length-of-word="])
     except getopt.GetoptError:
-        print('snake-in-the-box.py -n <length-of-the-word>')
+        print('snake-in-the-box.py -n <--length-of-the-word>')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("-n", "--length-of-word"):
