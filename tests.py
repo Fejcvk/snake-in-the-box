@@ -31,7 +31,7 @@ def run_test():
         end_of_n = time.time()
         f.write(f"Test took {end_of_n-start_of_n} seconds with average time {avg_time/10000} s on 10000 calls for N = {i}\n")
         f.write(f"Maximal time of execution is equal to = {max_t}, minimal to = {min_t}\n")
-
+    carf.write("**********************************************\n")
     min_t = 1000
     max_t = 0
     avg_time = 0

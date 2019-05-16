@@ -1,0 +1,15 @@
+**********************************************
+Test took 0.23313307762145996 seconds with average time 2.3071837425231935e-05 s on 10000 calls for N = 2
+Maximal time of execution is equal to = 9.560585021972656e-05, minimal to = 2.1696090698242188e-05
+**********************************************
+Test took 0.6897127628326416 seconds with average time 6.865096092224121e-05 s on 10000 calls for N = 3
+Maximal time of execution is equal to = 0.00022172927856445312, minimal to = 6.651878356933594e-05
+**********************************************
+Test took 2.3753304481506348 seconds with average time 0.00023718483448028564 s on 10000 calls for N = 4
+Maximal time of execution is equal to = 0.0004742145538330078, minimal to = 0.0002307891845703125
+**********************************************
+Test took 26.713228702545166 seconds with average time 0.0026706924438476562 s on 10000 calls for N = 5
+Maximal time of execution is equal to = 0.006632804870605469, minimal to = 0.0024433135986328125
+**********************************************
+Test took 9140.240974903107 seconds with average time 9.113501908779144 s on 1000 call for N = 6
+Maximal time of execution is equal to = 10.597084999084473, minimal to = 8.97378921508789
