@@ -1,7 +1,7 @@
 # Snake in the box
 This algorithm solves snake in the box problem in exact way. It will work in acceptable time for input size less than 8.
 
-###Prequisites
+### Prequisites
 Execute following command in order to make setup script executable
 ```
 chmod +x setup.sh
@@ -10,7 +10,7 @@ chmod +x setup.sh
 ### Installation
 Run script setup.sh which will create necessary virtual environment for python and create NumPy library
 
-###Usage
+### Usage
 In order to enter virtual environment pleae enter this into terminal
 ```
 source venv/bin/activate
@@ -20,7 +20,7 @@ After executing this line, to use this program just type
 python3 solution.py [-n][--length-of-the-word]
 ```
 
-###How to parse output
+### How to parse output
 For n = 3, output should look like this 
 ```
 [0, 1, 2, 5, 4]
