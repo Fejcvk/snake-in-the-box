@@ -8,7 +8,7 @@ chmod +x setup.sh
 ```
  
 ### Installation
-Run script setup.sh which will create necessary virtual environment for python and create NumPy library
+Run script setup.sh which will create necessary virtual environment for python and import NumPy library
 
 ### Usage
 In order to enter virtual environment pleae enter this into terminal
